@@ -1,0 +1,22 @@
+.cart-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cart-item {
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.cart-header {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+.cart-page h2 {
+  font-weight: 700;
+  color: #1e293b;
+}

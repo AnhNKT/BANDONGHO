@@ -1,0 +1,229 @@
+/* =================== BODY =================== */
+.home-container {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background-color: #f7f8fa;
+  color: #1a1a1a;
+  padding: 0;
+  margin: 0;
+}
+
+/* =================== NAVBAR =================== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.navbar a:hover {
+  color: #007bff;
+}
+
+
+/* =================== SECTION TITLE =================== */
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 40px 0 20px 0;
+  color: #222; 
+}
+
+/* =================== PRODUCT GRID =================== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 30px 50px 30px;
+}
+
+/* =================== PRODUCT CARD =================== */
+.product-card {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.product-brand {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 6px;
+}
+
+.product-stock {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.product-description {
+  font-size: 0.9rem;
+  color: #444;
+  flex-grow: 1;
+}
+
+.home-container {
+  background-color: #f9fafb;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 30px 0;
+  color: #1e293b;
+}
+
+.loading-text,
+.no-products {
+  font-size: 1.2rem;
+  color: #64748b;
+  margin-top: 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  padding: 0 40px 40px;
+  justify-items: center;
+}
+
+.carousel {
+  margin-top: 80px;
+  max-height: 500px;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.carousel img {
+  object-fit: cover;
+  height: 500px;
+}
+
+/* =================== CAROUSEL =================== */
+.carousel {
+  width: 100%;
+  height: 500px; /* chiều cao carousel */
+  overflow: hidden;
+  position: relative;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin-top: 80px;
+}
+
+.carousel img {
+  width: 100%;
+  height: 100%; /* ảnh sẽ luôn bằng chiều cao carousel */
+  object-fit: cover; /* ảnh sẽ được cắt vừa với khung mà không méo */
+  transition: transform 0.5s ease;
+}
+
+.carousel img:hover {
+  transform: scale(1.02);
+}
+
+/* =================== RESPONSIVE =================== */
+@media (max-width: 768px) {
+  .carousel {
+    height: 300px; /* chiều cao nhỏ hơn cho tablet */
+  }
+
+  .carousel img {
+    height: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    height: 200px; /* chiều cao nhỏ hơn cho mobile */
+  }
+
+  .carousel img {
+    height: 100%;
+  }
+}
+
+/* =================== RESPONSIVE =================== */
+@media (max-width: 768px) {
+  .carousel img {
+    height: 250px;
+  }
+
+  .product-card {
+    padding: 12px;
+  }
+
+  .product-name {
+    font-size: 1.1rem;
+  }
+
+  .product-price {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .carousel img {
+    height: 200px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar a {
+    margin: 10px 0;
+  }
+}

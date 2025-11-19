@@ -1,0 +1,29 @@
+.cart-container {
+  background: white;
+  padding-bottom: 30px;
+}
+
+.cart-header {
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.cart-item {
+  font-size: 15px;
+}
+
+.cart-img {
+  width: 100%;
+  max-width: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.cart-qty-input {
+  width: 60px;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
