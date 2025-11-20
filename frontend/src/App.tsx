@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import ProductDetail from "./pages/ProductDetail";
 import AllProducts from "./pages/AllProducts";
 
+
 const App: React.FC = () => {
   const location = useLocation();
 
@@ -31,12 +32,9 @@ const App: React.FC = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/products" element={<Admin />} />
           <Route path="/admin/orders" element={<Admin />} />
-
           {/* Trang sản phẩm theo hãng */}
           <Route path="/products/:brand" element={<AllProducts />} />
-
           <Route path="/product/:id" element={<ProductDetail />} />
-
           <Route path="*" element={<div>404 - Page Not Found</div>} />
         </Routes>
       </main>

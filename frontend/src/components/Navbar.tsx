@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -12,7 +13,6 @@ const Navbar: React.FC = () => {
 
   const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
       const navbar = document.querySelector(".navbar");
@@ -26,7 +26,6 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Danh sách hãng + key để dẫn tới collection
   const brands = [
     { name: "Rolex", key: "rolex" },
     { name: "Casio", key: "casio" },
@@ -44,32 +43,48 @@ const Navbar: React.FC = () => {
     navigate(`/products/${brandKey}`);
   };
 
+  const handleTrendClick = () => {
+    if (window.location.pathname === "/") {
+      const section = document.getElementById("trend-2025");
+      section?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/", { state: { scrollToTrend: true } });
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <div className="container-fluid d-flex align-items-center justify-content-between">
 
-        {/* LOGO */}
+        {/* Logo */}
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <img
-            src="/images/t.a.png"
-            alt="Logo"
-            height={70}
-            className="d-inline-block align-text-top me-2"
-          />
+          <img src="/images/t.a.png" alt="Logo" height={70} className="me-2"/>
           <span className="fw-bold text-dark fs-5">T.AWatch</span>
         </Link>
 
-        {/* MENU CHÍNH */}
+        {/* Mobile toggle */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        {/* Menu */}
         <div className="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
           <ul className="navbar-nav mb-2 mb-lg-0">
 
             <li className="nav-item mx-2">
-              <a className="nav-link active" href="#">
+              <button className="nav-link btn btn-link" onClick={handleTrendClick}>
                 Xu hướng 2025
-              </a>
+              </button>
             </li>
 
-            {/* MENU HÃNG ĐỒNG HỒ */}
             <li className="nav-item dropdown mx-2">
               <a
                 className="nav-link dropdown-toggle"
@@ -84,10 +99,7 @@ const Navbar: React.FC = () => {
               <ul className="dropdown-menu" aria-labelledby="watchDropdown">
                 {brands.map((b) => (
                   <li key={b.key}>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => handleBrandClick(b.key)}
-                    >
+                    <button className="dropdown-item" onClick={() => handleBrandClick(b.key)}>
                       Đồng hồ {b.name}
                     </button>
                   </li>
@@ -95,45 +107,13 @@ const Navbar: React.FC = () => {
               </ul>
             </li>
 
-            <li className="nav-item mx-2">
-              <a className="nav-link" href="#">Nam</a>
-            </li>
-            <li className="nav-item mx-2">
-              <a className="nav-link" href="#">Nữ</a>
-            </li>
-
-            {/* PHỤ KIỆN */}
-            <li className="nav-item dropdown mx-2">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="accessoryDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Phụ kiện
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="accessoryDropdown">
-                <li><a className="dropdown-item" href="#">Dây đồng hồ</a></li>
-                <li><a className="dropdown-item" href="#">Loa Bluetooth</a></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#">Tai nghe</a></li>
-              </ul>
-            </li>
-
           </ul>
         </div>
 
-        {/* TÌM KIẾM + GIỎ HÀNG */}
+        {/* Search + Cart */}
         <div className="d-flex align-items-center gap-3">
           <form className="d-flex search-form" role="search">
-            <input
-              className="form-control"
-              type="search"
-              placeholder="Tìm sản phẩm..."
-              aria-label="Search"
-            />
+            <input className="form-control" type="search" placeholder="Tìm sản phẩm..." />
             <button className="btn btn-outline-success ms-2" type="submit">
               <FaSearch />
             </button>

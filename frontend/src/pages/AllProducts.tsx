@@ -1,47 +1,77 @@
+// src/pages/AllProducts.tsx
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getProductsByBrand } from "../api/products";
+import { useParams, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import type { Product } from "../types";
+import "./AllProducts.css";
 
 const AllProducts: React.FC = () => {
   const { brand } = useParams<{ brand: string }>();
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!brand) return;
-
     const fetchProducts = async () => {
-      setLoading(true);
+      try {
+        setLoading(true);
+        setError("");
 
-      // Chuẩn hóa brand làm collection name
-      const collectionName = brand.toLowerCase();
-      const data = await getProductsByBrand(collectionName);
+        if (!brand) throw new Error("Thiếu thương hiệu");
 
-      setProducts(data);
-      setLoading(false);
+        const res = await fetch(`http://127.0.0.1:5000/api/products/brand/${brand.toLowerCase()}`);
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.message || "Lỗi server");
+        }
+
+        const data: Product[] = await res.json();
+        if (!data || data.length === 0) {
+          setError(`Không tìm thấy sản phẩm cho thương hiệu "${brand}"`);
+          setProducts([]);
+        } else {
+          setProducts(data);
+        }
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || "Lỗi server");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProducts();
   }, [brand]);
 
-  if (loading) return <h3 className="text-center mt-5">Đang tải sản phẩm...</h3>;
+  if (loading)
+    return (
+      <div className="container-center">
+        <div className="spinner-border text-primary" role="status"></div>
+        <p>Đang tải sản phẩm...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="container-center text-danger">
+        <h5>{error}</h5>
+        <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>
+          ⬅ Quay lại
+        </button>
+      </div>
+    );
 
   return (
-    <div className="container mt-5 pt-5">
-      <h2 className="text-center mb-4">
-        Sản phẩm hãng <span className="text-primary">{brand?.toUpperCase()}</span>
-      </h2>
-
+    <div className="all-products container">
+      <h2 className="page-title">Sản phẩm đồng hồ {brand}</h2>
       {products.length === 0 ? (
-        <h4 className="text-center">Không có sản phẩm nào!</h4>
+        <p className="text-center mt-4">Không có sản phẩm nào.</p>
       ) : (
-        <div className="row g-4">
-          {products.map((item) => (
-            <div className="col-md-3" key={item._id}>
-              <ProductCard product={item} />
-            </div>
+        <div className="products-grid">
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       )}

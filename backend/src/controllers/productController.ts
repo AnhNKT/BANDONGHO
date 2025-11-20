@@ -1,55 +1,113 @@
 import { Request, Response } from "express";
-import Product from "../models/Product";
+import { Model } from "mongoose";
+import ProductModel, { getProductModelByBrand, IProduct } from "../models/Product";
 
-// Lấy tất cả sản phẩm
+// =================== PUBLIC CONTROLLERS ===================
+
+// Lấy tất cả sản phẩm từ default collection
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find();
+    const products = await ProductModel.find().lean().exec();
     res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error });
+  } catch (err) {
+    console.error("Lỗi server:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-// Lấy chi tiết 1 sản phẩm
+// Lấy sản phẩm theo _id từ default collection
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: "Sản phẩm không tồn tại" });
+    const { id } = req.params;
+    const product = await ProductModel.findById(id).lean().exec();
+
+    if (!product) return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
+
     res.json(product);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error });
+  } catch (err) {
+    console.error("Lỗi server:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-// Tạo sản phẩm mới (Admin)
+// Lấy tất cả sản phẩm theo brand (dynamic collection)
+export const getProductsByBrand = async (req: Request, res: Response) => {
+  try {
+    const { brand } = req.params;
+    if (!brand) return res.status(400).json({ message: "Thiếu brand" });
+
+    const Product: Model<IProduct> = getProductModelByBrand(brand);
+    const products = await Product.find().lean().exec();
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({ message: `Không tìm thấy sản phẩm cho brand: ${brand}` });
+    }
+
+    res.json(products);
+  } catch (err) {
+    console.error("Lỗi server:", err);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+// Lấy 1 sản phẩm theo brand + id
+export const getProductByBrandId = async (req: Request, res: Response) => {
+  try {
+    const { brand, id } = req.params;
+    if (!brand || !id) return res.status(400).json({ message: "Thiếu brand hoặc id" });
+
+    const Product: Model<IProduct> = getProductModelByBrand(brand);
+    const product = await Product.findById(id).lean().exec();
+
+    if (!product) return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
+
+    res.json(product);
+  } catch (err) {
+    console.error("Lỗi server:", err);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+// =================== ADMIN CONTROLLERS ===================
+
+// Tạo sản phẩm mới vào default collection
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.create(req.body);
-    res.status(201).json(product);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error });
+    const newProduct = new ProductModel(req.body);
+    const savedProduct = await newProduct.save();
+    res.status(201).json(savedProduct);
+  } catch (err) {
+    console.error("Lỗi tạo sản phẩm:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-// Cập nhật sản phẩm (Admin)
+// Cập nhật sản phẩm trong default collection
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!product) return res.status(404).json({ message: "Sản phẩm không tồn tại" });
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error });
+    const { id } = req.params;
+    const updatedProduct = await ProductModel.findByIdAndUpdate(id, req.body, { new: true }).lean().exec();
+
+    if (!updatedProduct) return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
+
+    res.json(updatedProduct);
+  } catch (err) {
+    console.error("Lỗi cập nhật sản phẩm:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-// Xóa sản phẩm (Admin)
+// Xóa sản phẩm trong default collection
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) return res.status(404).json({ message: "Sản phẩm không tồn tại" });
-    res.json({ message: "Đã xóa sản phẩm" });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi server", error });
+    const { id } = req.params;
+    const deletedProduct = await ProductModel.findByIdAndDelete(id).lean().exec();
+
+    if (!deletedProduct) return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
+
+    res.json({ message: "Xóa sản phẩm thành công", product: deletedProduct });
+  } catch (err) {
+    console.error("Lỗi xóa sản phẩm:", err);
+    res.status(500).json({ message: "Lỗi server" });
   }
 };

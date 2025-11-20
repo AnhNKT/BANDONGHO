@@ -1,8 +1,8 @@
-// src/pages/ProductDetail.tsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import type { Product } from "../types";
+import ProductCard from "../components/ProductCard";
 import "./ProductDetail.css";
 
 const ProductDetail: React.FC = () => {
@@ -11,7 +11,9 @@ const ProductDetail: React.FC = () => {
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [brandProducts, setBrandProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingBrand, setLoadingBrand] = useState(true);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const ProductDetail: React.FC = () => {
 
     const fetchProduct = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`http://127.0.0.1:5000/api/products/${id}`);
         if (!res.ok) throw new Error("Không tìm thấy sản phẩm");
         const data: Product = await res.json();
@@ -30,8 +33,31 @@ const ProductDetail: React.FC = () => {
         setLoading(false);
       }
     };
+
     fetchProduct();
   }, [id]);
+
+  // Lấy các sản phẩm cùng brand
+  useEffect(() => {
+    if (!product?.brand) return;
+
+    const fetchBrandProducts = async () => {
+      try {
+        setLoadingBrand(true);
+        const res = await fetch(`http://127.0.0.1:5000/api/products/brand/${product.brand.toLowerCase()}`);
+        if (!res.ok) throw new Error("Không lấy được sản phẩm cùng thương hiệu");
+        const data: Product[] = await res.json();
+        // Loại bỏ chính sản phẩm đang xem
+        setBrandProducts(data.filter(p => p._id !== product._id));
+      } catch (err: any) {
+        console.error("Fetch brand products error:", err);
+      } finally {
+        setLoadingBrand(false);
+      }
+    };
+
+    fetchBrandProducts();
+  }, [product]);
 
   const handleAddToCart = () => {
     if (product) {
@@ -71,6 +97,24 @@ const ProductDetail: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Section sản phẩm cùng brand */}
+      <div className="brand-products mt-5">
+        <h3>Sản phẩm cùng thương hiệu</h3>
+        {loadingBrand ? (
+          <p>Đang tải sản phẩm cùng thương hiệu...</p>
+        ) : brandProducts.length === 0 ? (
+          <p>Không có sản phẩm cùng thương hiệu.</p>
+        ) : (
+          <div className="row">
+            {brandProducts.map(p => (
+              <div key={p._id} className="col-md-3 mb-4">
+                <ProductCard product={p} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

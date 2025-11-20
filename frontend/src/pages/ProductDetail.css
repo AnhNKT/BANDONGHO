@@ -1,44 +1,101 @@
+/* ------- Khung trang chi tiết sản phẩm ------- */
 .product-detail-page {
-  background-color: #f9fafb;
-  min-height: 100vh;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
+/* ------- Ảnh sản phẩm ------- */
 .product-detail-img {
-  max-width: 80%;
+  width: 100%;
+  max-width: 420px;
   height: auto;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
 }
 
-.product-title {
+.product-detail-img:hover {
+  transform: scale(1.03);
+}
+
+/* ------- Mô tả ------- */
+.product-detail-page h2 {
+  font-size: 28px;
   font-weight: 700;
-  color: #222;
 }
 
-.product-brand {
-  color: #555;
-  margin-bottom: 10px;
-}
-
-.product-desc {
-  font-size: 15px;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.product-price {
-  font-size: 22px;
-  font-weight: 600;
-  color: #dc3545;
-}
-
-.btn {
+.product-detail-page p {
   font-size: 16px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  line-height: 1.6;
 }
 
-.btn:hover {
-  transform: scale(1.05);
+/* ------- Nút quay lại ------- */
+button.btn-light {
+  border-radius: 10px;
+  padding: 8px 18px;
+  border: 1px solid #ddd;
+  transition: background 0.2s ease;
+}
+
+button.btn-light:hover {
+  background: #f3f3f3;
+}
+
+/* ------- Nút mua hàng và giỏ hàng ------- */
+.btn {
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 10px 18px;
+}
+
+.btn-success,
+.btn-outline-primary {
+  transition: 0.25s ease;
+}
+
+.btn-outline-primary:hover {
+  background: #0d6efd;
+  color: #fff;
+}
+
+.btn-success:disabled,
+.btn-outline-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ------- Responsive cho mobile ------- */
+@media (max-width: 768px) {
+  .product-detail-img {
+    max-width: 300px;
+  }
+
+  .product-detail-page h2 {
+    font-size: 22px;
+  }
+
+  .product-detail-page p {
+    font-size: 15px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .d-flex.gap-3 {
+    flex-direction: column;
+  }
+}
+
+/* ------- Animation ------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,0 +1,45 @@
+/* AllProducts.css */
+
+/* Container trang */
+.all-products {
+  padding: 80px 20px 40px; /* padding top đủ để tránh navbar cố định */
+}
+
+/* Tiêu đề trang */
+.all-products .page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Grid sản phẩm */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Responsive: nhỏ hơn 768px */
+@media (max-width: 767px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+}
+
+/* Spinner hoặc thông báo */
+.container-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.container-center h5,
+.container-center p {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
