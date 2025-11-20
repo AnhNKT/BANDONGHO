@@ -1,17 +1,12 @@
+// src/components/CarouselBanner.tsx
 import React from "react";
+import "./CarouselBanner.css";
+import bannerImg from "../assets/79cbcf74-b9b7-4567-aa89-472b27fe1991.png"; // file bạn vừa upload
 
-interface CarouselBannerProps {
-  images: string[];
-}
-
-const CarouselBanner: React.FC<CarouselBannerProps> = ({ images }) => {
+const CarouselBanner: React.FC = () => {
   return (
-    <div className="w-full overflow-hidden mb-8">
-      <div className="flex transition-transform duration-500">
-        {images.map((img, idx) => (
-          <img key={idx} src={img} alt={`banner-${idx}`} className="w-full h-64 object-cover" />
-        ))}
-      </div>
+    <div className="carousel-banner">
+      <img src={bannerImg} alt="Banner" />
     </div>
   );
 };

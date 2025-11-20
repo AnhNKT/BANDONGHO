@@ -1,0 +1,13 @@
+/* src/components/CarouselBanner.css */
+.carousel-banner {
+  width: 100%;          /* chiếm toàn bộ chiều ngang */
+  height: 500px;        /* tăng chiều cao */
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* giữ tỷ lệ hình ảnh đầy đủ, không bị méo */
+}

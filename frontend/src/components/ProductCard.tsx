@@ -13,14 +13,20 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   return (
     <div
       className="product-card"
-      onClick={() => navigate(`/product/${product._id}`)}
+      onClick={() => navigate(`/product/${product._id ?? (product as any).id}`)}
       style={{ cursor: "pointer" }}
     >
-      <img src={product.image} alt={product.name} className="product-image" />
+      <img
+        src={product.image || "/images/default-product.png"} // fallback hình ảnh
+        alt={product.name}
+        className="product-image"
+      />
       <div className="product-info">
-        <h5>{product.name}</h5>
-        <p className="brand">{product.brand}</p>
-        <p className="price">{product.price.toLocaleString()} ₫</p>
+        <h5 className="product-name">{product.name}</h5>
+        {product.brand && <p className="brand">{product.brand}</p>}
+        {product.price !== undefined && (
+          <p className="price">{product.price.toLocaleString()} ₫</p>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -11,11 +10,11 @@ import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import ProductDetail from "./pages/ProductDetail";
+import AllProducts from "./pages/AllProducts";
 
 const App: React.FC = () => {
   const location = useLocation();
 
-  // Ẩn Navbar cho login và tất cả trang admin
   const shouldHideNavbar =
     location.pathname === "/login" || location.pathname.startsWith("/admin");
 
@@ -32,9 +31,12 @@ const App: React.FC = () => {
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/products" element={<Admin />} />
           <Route path="/admin/orders" element={<Admin />} />
+
+          {/* Trang sản phẩm theo hãng */}
+          <Route path="/products/:brand" element={<AllProducts />} />
+
           <Route path="/product/:id" element={<ProductDetail />} />
 
-          {/* Route 404 */}
           <Route path="*" element={<div>404 - Page Not Found</div>} />
         </Routes>
       </main>
