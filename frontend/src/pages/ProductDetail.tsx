@@ -14,7 +14,7 @@ const ProductDetail: React.FC = () => {
   const [brandProducts, setBrandProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingBrand, setLoadingBrand] = useState(true);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -37,20 +37,20 @@ const ProductDetail: React.FC = () => {
     fetchProduct();
   }, [id]);
 
-  // Lấy các sản phẩm cùng brand
   useEffect(() => {
     if (!product?.brand) return;
 
     const fetchBrandProducts = async () => {
       try {
         setLoadingBrand(true);
-        const res = await fetch(`http://127.0.0.1:5000/api/products/brand/${product.brand.toLowerCase()}`);
+        const res = await fetch(
+          `http://127.0.0.1:5000/api/products/brand/${product.brand.toLowerCase()}`
+        );
         if (!res.ok) throw new Error("Không lấy được sản phẩm cùng thương hiệu");
         const data: Product[] = await res.json();
-        // Loại bỏ chính sản phẩm đang xem
-        setBrandProducts(data.filter(p => p._id !== product._id));
+        setBrandProducts(data.filter((p) => p._id !== product._id));
       } catch (err: any) {
-        console.error("Fetch brand products error:", err);
+        console.error(err);
       } finally {
         setLoadingBrand(false);
       }
@@ -81,13 +81,17 @@ const ProductDetail: React.FC = () => {
     <div className="product-detail-page container mt-5 pt-4">
       <div className="row align-items-center">
         <div className="col-md-6 text-center">
-          <img src={product.image} alt={product.name} className="product-detail-img" />
+          <img
+            src={product.image || "/images/default-product.png"}
+            alt={product.name}
+            className="product-detail-img"
+          />
         </div>
         <div className="col-md-6">
           <h2>{product.name}</h2>
           <p>Thương hiệu: {product.brand}</p>
           <p>{product.description}</p>
-          <h4>{product.price.toLocaleString()} ₫</h4>
+          <h4>{product.price?.toLocaleString()} ₫</h4>
           <div className="d-flex gap-3 mt-4">
             <button className="btn btn-outline-primary" onClick={handleAddToCart}>
               🛒 Thêm vào giỏ
@@ -99,7 +103,6 @@ const ProductDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Section sản phẩm cùng brand */}
       <div className="brand-products mt-5">
         <h3>Sản phẩm cùng thương hiệu</h3>
         {loadingBrand ? (
@@ -108,7 +111,7 @@ const ProductDetail: React.FC = () => {
           <p>Không có sản phẩm cùng thương hiệu.</p>
         ) : (
           <div className="row">
-            {brandProducts.map(p => (
+            {brandProducts.map((p) => (
               <div key={p._id} className="col-md-3 mb-4">
                 <ProductCard product={p} />
               </div>

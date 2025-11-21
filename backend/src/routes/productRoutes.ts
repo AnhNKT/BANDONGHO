@@ -1,5 +1,6 @@
 import express from "express";
 import type { Model, Document } from "mongoose";
+import mongoose from "mongoose"; // <-- Thêm import mongoose để validate ObjectId
 // fallback IProduct type if '../types/index' is not present
 type IProduct = Document & Record<string, any>;
 import {
@@ -41,6 +42,11 @@ router.get("/brand/:brand/:id", async (req, res) => {
   try {
     const { brand, id } = req.params;
     if (!brand || !id) return res.status(400).json({ message: "Thiếu brand hoặc id" });
+
+    // === Thêm validate ObjectId để tránh lỗi 500 ===
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Id sản phẩm không hợp lệ" });
+    }
 
     const Product = getProductModelByBrand(brand) as Model<IProduct>;
     const product = await Product.findById(id).lean().exec();
