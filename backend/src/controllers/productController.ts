@@ -1,5 +1,7 @@
+// src/controllers/productController.ts
+
 import { Request, Response } from "express";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import ProductModel, { getProductModelByBrand, IProduct } from "../models/Product";
 
 // =================== PUBLIC CONTROLLERS ===================
@@ -10,23 +12,33 @@ export const getProducts = async (req: Request, res: Response) => {
     const products = await ProductModel.find().lean().exec();
     res.json(products);
   } catch (err) {
-    console.error("Lỗi server:", err);
-    res.status(500).json({ message: "Lỗi server" });
+    console.error("Lỗi server khi lấy tất cả sản phẩm:", err);
+    res.status(500).json({ message: "Lỗi server khi lấy tất cả sản phẩm" });
   }
 };
+
 
 // Lấy sản phẩm theo _id từ default collection
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const product = await ProductModel.findById(id).lean().exec();
+    let product;
+    
+    // ✨ FIX: Kiểm tra ID là ObjectId hay Custom String
+    if (mongoose.isValidObjectId(id)) {
+      // Dùng findById nếu là ObjectId tự sinh
+      product = await ProductModel.findById(id).lean().exec();
+    } else {
+      // Dùng findOne nếu là ID chuỗi tùy chỉnh (rolex9, tag10,...)
+      product = await ProductModel.findOne({ _id: id }).lean().exec();
+    }
 
     if (!product) return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
 
     res.json(product);
   } catch (err) {
-    console.error("Lỗi server:", err);
-    res.status(500).json({ message: "Lỗi server" });
+    console.error(`LỖI TRUY VẤN DB TẠI getProductById (ID: ${req.params.id}):`, err);
+    res.status(500).json({ message: "Lỗi server khi tìm chi tiết sản phẩm (default collection)" });
   }
 };
 
@@ -45,8 +57,8 @@ export const getProductsByBrand = async (req: Request, res: Response) => {
 
     res.json(products);
   } catch (err) {
-    console.error("Lỗi server:", err);
-    res.status(500).json({ message: "Lỗi server" });
+    console.error(`LỖI TRUY VẤN DB TẠI getProductsByBrand (Brand: ${req.params.brand}):`, err);
+    res.status(500).json({ message: "Lỗi server khi lấy danh sách sản phẩm theo brand" });
   }
 };
 
@@ -57,20 +69,28 @@ export const getProductByBrandId = async (req: Request, res: Response) => {
     if (!brand || !id) return res.status(400).json({ message: "Thiếu brand hoặc id" });
 
     const Product: Model<IProduct> = getProductModelByBrand(brand);
-    const product = await Product.findById(id).lean().exec();
+    let product;
 
-    if (!product) return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
+    // ✨ FIX: Kiểm tra ID là ObjectId hay Custom String
+    if (mongoose.isValidObjectId(id)) {
+      // Dùng findById nếu là ObjectId tự sinh
+      product = await Product.findById(id).lean().exec();
+    } else {
+      // Dùng findOne nếu là ID chuỗi tùy chỉnh
+      product = await Product.findOne({ _id: id }).lean().exec();
+    }
+    
+    if (!product) return res.status(404).json({ message: `Không tìm thấy sản phẩm (Brand: ${brand}, ID: ${id})` });
 
     res.json(product);
   } catch (err) {
-    console.error("Lỗi server:", err);
-    res.status(500).json({ message: "Lỗi server" });
+    console.error(`LỖI TRUY VẤN DB TẠI getProductByBrandId (Brand: ${req.params.brand}, ID: ${req.params.id}):`, err);
+    res.status(500).json({ message: "Lỗi server khi tìm chi tiết sản phẩm theo brand" });
   }
 };
 
 // =================== ADMIN CONTROLLERS ===================
-
-// Tạo sản phẩm mới vào default collection
+// ... (Các hàm Admin giữ nguyên)
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const newProduct = new ProductModel(req.body);
@@ -82,7 +102,6 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-// Cập nhật sản phẩm trong default collection
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -97,7 +116,6 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
-// Xóa sản phẩm trong default collection
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

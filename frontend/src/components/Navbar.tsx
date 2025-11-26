@@ -105,6 +105,7 @@ const Navbar: React.FC = () => {
                   </li>
                 ))}
               </ul>
+              
             </li>
 
           </ul>

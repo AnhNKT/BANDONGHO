@@ -10,16 +10,21 @@ interface Props {
 const ProductCard: React.FC<Props> = ({ product }) => {
   const navigate = useNavigate();
 
+  const productUrl = product.brand
+    ? `/products/${product.brand.toLowerCase()}/${product._id}`
+    : `/product/${product._id}`;
+
   return (
     <div
       className="product-card"
-      onClick={() => navigate(`/product/${product._id ?? (product as any).id}`)}
+      onClick={() => navigate(productUrl)}
       style={{ cursor: "pointer" }}
     >
       <img
-        src={product.image || "/images/default-product.png"} // fallback hình ảnh
+        src={product.image || "/images/default-product.png"}
         alt={product.name}
         className="product-image"
+        onError={(e: any) => (e.target.src = "/images/default-product.png")}
       />
       <div className="product-info">
         <h5 className="product-name">{product.name}</h5>

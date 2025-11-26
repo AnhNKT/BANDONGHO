@@ -1,11 +1,12 @@
+// src/routes/productRoutes.ts
+
 import express from "express";
-import type { Model, Document } from "mongoose";
-import mongoose from "mongoose"; // <-- Thêm import mongoose để validate ObjectId
-// fallback IProduct type if '../types/index' is not present
-type IProduct = Document & Record<string, any>;
+import mongoose, { Model, Document } from "mongoose";
 import {
   getProducts,
   getProductById,
+  getProductsByBrand,
+  getProductByBrandId, // <-- Đã import Controller đã sửa
   createProduct,
   updateProduct,
   deleteProduct,
@@ -13,62 +14,53 @@ import {
 import { protect, adminOnly } from "../middleware/authMiddleware";
 import { getProductModelByBrand } from "../models/Product";
 
+type IProduct = Document & Record<string, any>;
+
 const router = express.Router();
 
-// =============== Public Routes ===============
+// ==================== Public Routes (Đã sửa thứ tự) ====================
 
-// Lấy sản phẩm theo brand (dynamic collection)
-router.get("/brand/:brand", async (req, res) => {
+// 1. Lấy tất cả sản phẩm (Chung nhất)
+router.get("/", getProducts);
+
+// 2. Lấy sản phẩm theo slug (Cụ thể)
+router.get("/slug/:slug", async (req, res) => {
   try {
-    const { brand } = req.params;
-    if (!brand) return res.status(400).json({ message: "Thiếu brand" });
+    const { slug } = req.params;
+    if (!slug) return res.status(400).json({ message: "Thiếu slug" });
 
-    const Product = getProductModelByBrand(brand) as Model<IProduct>;
-    const products = await Product.find().lean().exec();
+    // Cập nhật danh sách brand bao gồm cả TAG HEUER mà bạn vừa gửi.
+    const brands = ["casio", "rolex", "seiko", "tagheuer"];
+    let product: IProduct | null = null;
 
-    if (!products || products.length === 0) {
-      return res.status(404).json({ message: `Không tìm thấy sản phẩm cho brand: ${brand}` });
+    for (const brand of brands) {
+      // ✨ FIX: Thêm 'as unknown' để buộc TypeScript chấp nhận chuyển đổi
+      const Product = getProductModelByBrand(brand) as unknown as Model<IProduct>;
+      product = await Product.findOne({ slug }).lean().exec();
+      if (product) break;
     }
 
-    res.json(products);
-  } catch (err) {
-    console.error("Lỗi server:", err);
-    res.status(500).json({ message: "Lỗi server" });
-  }
-});
-
-// Lấy 1 sản phẩm theo brand + product id
-router.get("/brand/:brand/:id", async (req, res) => {
-  try {
-    const { brand, id } = req.params;
-    if (!brand || !id) return res.status(400).json({ message: "Thiếu brand hoặc id" });
-
-    // === Thêm validate ObjectId để tránh lỗi 500 ===
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Id sản phẩm không hợp lệ" });
-    }
-
-    const Product = getProductModelByBrand(brand) as Model<IProduct>;
-    const product = await Product.findById(id).lean().exec();
-
-    if (!product) {
-      return res.status(404).json({ message: `Không tìm thấy sản phẩm với id: ${id}` });
-    }
+    if (!product) return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
 
     res.json(product);
   } catch (err) {
-    console.error("Lỗi server:", err);
+    console.error("Lỗi server tại Route /slug/:slug:", err);
     res.status(500).json({ message: "Lỗi server" });
   }
 });
 
-// Lấy tất cả sản phẩm chung (admin/public)
-router.get("/", getProducts);
+// 3. Lấy 1 sản phẩm theo Brand và theo _id (CỤ THỂ NHẤT CHO CHI TIẾT SẢN PHẨM)
+// ✨ VỊ TRÍ QUAN TRỌNG: Phải đứng trước Route 4 và 5.
+router.get("/brand/:brand/:id", getProductByBrandId);
 
-// Lấy 1 sản phẩm theo id từ default collection
+// 4. Lấy tất cả sản phẩm cùng thương hiệu (Chung hơn)
+router.get("/brand/:brand", getProductsByBrand);
+
+// 5. Lấy sản phẩm theo MongoDB _id (CHUNG NHẤT - PHẢI ĐẶT CUỐI CÙNG)
 router.get("/:id", getProductById);
 
-// =============== Admin Routes ===============
+// ==================== Admin Routes ====================
+// ... (Các Route Admin giữ nguyên)
 router.post("/", protect, adminOnly, createProduct);
 router.put("/:id", protect, adminOnly, updateProduct);
 router.delete("/:id", protect, adminOnly, deleteProduct);

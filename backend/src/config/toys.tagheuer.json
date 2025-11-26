@@ -1,0 +1,90 @@
+[{
+  "_id": "tag10",
+  "name": "TAG Heuer Monaco Calibre 11",
+  "description": "Phiên bản Monaco cơ học.",
+  "price": 55000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000070/tag_monaco11.jpg",
+  "stock": 3
+},
+{
+  "_id": "tag7",
+  "name": "TAG Heuer Carrera Calibre 16",
+  "description": "Chronograph cổ điển.",
+  "price": 52000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000067/tag_calibre16.jpg",
+  "stock": 4
+},
+{
+  "_id": "tag9",
+  "name": "TAG Heuer Carrera Day-Date",
+  "description": "Classic chronograph với lịch ngày.",
+  "price": 50000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000069/tag_daydate.jpg",
+  "stock": 4
+},
+{
+  "_id": "tag1",
+  "name": "TAG Heuer Carrera",
+  "description": "Chronograph thể thao nổi tiếng.",
+  "price": 50000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000061/tag_carrera.jpg",
+  "stock": 4
+},
+{
+  "_id": "tag4",
+  "name": "TAG Heuer Formula 1",
+  "description": "Phong cách thể thao năng động.",
+  "price": 40000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000064/tag_formula1.jpg",
+  "stock": 6
+},
+{
+  "_id": "tag5",
+  "name": "TAG Heuer Connected",
+  "description": "Đồng hồ thông minh cao cấp.",
+  "price": 60000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000065/tag_connected.jpg",
+  "stock": 4
+},
+{
+  "_id": "tag6",
+  "name": "TAG Heuer Autavia",
+  "description": "Đồng hồ phi công và xe đua.",
+  "price": 48000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000066/tag_autavia.jpg",
+  "stock": 3
+},
+{
+  "_id": "tag2",
+  "name": "TAG Heuer Monaco",
+  "description": "Thiết kế vuông huyền thoại.",
+  "price": 55000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000062/tag_monaco.jpg",
+  "stock": 3
+},
+{
+  "_id": "tag3",
+  "name": "TAG Heuer Aquaracer",
+  "description": "Đồng hồ lặn chuyên nghiệp.",
+  "price": 45000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000063/tag_aquaracer.jpg",
+  "stock": 5
+},
+{
+  "_id": "tag8",
+  "name": "TAG Heuer Carrera Heuer 02",
+  "description": "Phiên bản hiện đại chronograph.",
+  "price": 56000000,
+  "brand": "Tag Heuer",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000068/tag_heuer02.jpg",
+  "stock": 5
+}]

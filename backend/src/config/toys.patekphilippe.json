@@ -1,0 +1,90 @@
+[{
+  "_id": "patek8",
+  "name": "Patek Philippe Annual Calendar",
+  "description": "Lịch thường niên tiện lợi.",
+  "price": 580000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000078/patek_annual.jpg",
+  "stock": 3
+},
+{
+  "_id": "patek2",
+  "name": "Patek Philippe Aquanaut",
+  "description": "Phong cách trẻ trung, năng động.",
+  "price": 500000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000072/patek_aquanaut.jpg",
+  "stock": 2
+},
+{
+  "_id": "patek10",
+  "name": "Patek Philippe Golden Ellipse",
+  "description": "Thiết kế hình bầu dục độc đáo.",
+  "price": 500000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000080/patek_ellipse.jpg",
+  "stock": 3
+},
+{
+  "_id": "patek9",
+  "name": "Patek Philippe Chronograph",
+  "description": "Đồng hồ chronograph sang trọng.",
+  "price": 620000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000079/patek_chrono.jpg",
+  "stock": 2
+},
+{
+  "_id": "patek1",
+  "name": "Patek Philippe Nautilus",
+  "description": "Đồng hồ thể thao sang trọng, biểu tượng Thụy Sĩ.",
+  "price": 600000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000071/patek_nautilus.jpg",
+  "stock": 3
+},
+{
+  "_id": "patek7",
+  "name": "Patek Philippe World Time",
+  "description": "Đồng hồ nhiều múi giờ.",
+  "price": 600000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000077/patek_worldtime.jpg",
+  "stock": 2
+},
+{
+  "_id": "patek3",
+  "name": "Patek Philippe Calatrava",
+  "description": "Đồng hồ dress watch thanh lịch.",
+  "price": 450000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000073/patek_calatrava.jpg",
+  "stock": 4
+},
+{
+  "_id": "patek5",
+  "name": "Patek Philippe Grand Complications",
+  "description": "Đỉnh cao chế tác đồng hồ cơ học.",
+  "price": 700000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000075/patek_grand.jpg",
+  "stock": 1
+},
+{
+  "_id": "patek6",
+  "name": "Patek Philippe Perpetual Calendar",
+  "description": "Lịch vạn niên tinh xảo.",
+  "price": 650000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000076/patek_calendar.jpg",
+  "stock": 2
+},
+{
+  "_id": "patek4",
+  "name": "Patek Philippe Complications",
+  "description": "Đồng hồ nhiều chức năng, tinh xảo.",
+  "price": 550000000,
+  "brand": "Patek Philippe",
+  "image": "https://res.cloudinary.com/demo/image/upload/v1700000074/patek_complications.jpg",
+  "stock": 3
+}]
